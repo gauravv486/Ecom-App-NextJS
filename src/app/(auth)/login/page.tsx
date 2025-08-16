@@ -1,11 +1,12 @@
 //@ts-nocheck
 'use client'
 import { useState } from "react"
-import { handleSubmit } from "@/action";
+import {  login, signup } from "@/lib/action";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
-    
+
     const router = useRouter();
 
     const [name, setName] = useState("");
@@ -28,17 +29,16 @@ export default function LoginPage() {
         if (password.length < 6) {
             errorObj.password = "Password length should be minimum of 6";
         }
-        
+
         if (errorObj.name || errorObj.email || errorObj.password) {
             setError(errorObj);
             return;
         } else {
             const obj = {
-                name: name,
                 email: email,
                 password: password
             }
-            const res = await handleSubmit(obj);
+            const res = await login(obj);
             if (res.success) {
                 router.push('/');
             } else {
@@ -54,7 +54,7 @@ export default function LoginPage() {
                 onSubmit={validateSubmit}
                 className="bg-white w-full max-w-md p-10 rounded-3xl shadow-2xl flex flex-col gap-5 "
             >
-                <h2 className="text-3xl font-bold text-black text-left tracking-tight mb-2">Sign Up</h2>
+                <h2 className="text-3xl font-bold text-black text-left tracking-tight mb-2">Login</h2>
                 {/* Align with caption in image */}
                 <div>
                     <input
@@ -96,31 +96,17 @@ export default function LoginPage() {
                     type="submit"
                     className="w-full bg-black text-white font-bold py-3 rounded-xl text-lg shadow-none hover:text-white transition mb-2"
                 >
-                    Sign Up
+                    Login
                 </button>
                 {error.msg && (
                     <p className="text-red-500 text-xs mt-2 font-medium">{error.msg}</p>
                 )}
                 {/* Divider with lines and 'Or' */}
                 <div className="flex items-center gap-2 my-3">
-                    <div className="flex-1 h-px bg-black"></div>
-                    <span className="text-black font-medium text-sm">Or</span>
-                    <div className="flex-1 h-px bg-black"></div>
+
+                    <div>Don't have account ! <span className="text-blue-400"> <Link href={"/signup"}>Signup</Link></span></div>
                 </div>
-                <div className="flex gap-4">
-                    <button
-                        type="button"
-                        className="w-full bg-black text-white font-bold py-3 rounded-xl"
-                    >
-                        Google
-                    </button>
-                    <button
-                        type="button"
-                        className="w-full bg-black text-white font-bold py-3 rounded-xl"
-                    >
-                        Facebook
-                    </button>
-                </div>
+
             </form>
         </div>
     );

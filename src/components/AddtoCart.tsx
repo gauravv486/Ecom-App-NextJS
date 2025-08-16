@@ -7,8 +7,7 @@ import { useContext, useEffect, useState } from "react";
 
 export default function AddtoCart({ item }) {
 
-    const {cart , setCart} = useContext(CartContext);
-
+    const { cart, setCart } = useContext(CartContext);
     const [inCart, setInCart] = useState(false);
 
     useEffect(() => {
@@ -40,7 +39,7 @@ export default function AddtoCart({ item }) {
             copy.push(itemtoadd);
         }
         setCart(copy);
-       
+
     }
 
     return (

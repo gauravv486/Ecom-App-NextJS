@@ -1,8 +1,10 @@
 //@ts-nocheck
 import Cards from "@/components/Card";
 import Header from "@/components/Header";
+import { getProducts } from "@/lib/productAction";
+import prismaClient from "@/services/prisma";
 import { error } from "console";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 // import { createContext } from "vm";
 
@@ -14,30 +16,28 @@ export default async function Home() {
 
       <div className="h-[500px] w-screen flex flex-col justify-center items-center">
         <h1>Loading...</h1>
-        <ClipLoader color="#36d7b7" size={70} />
+        <div className="loader" ></div>
       </div>
-       
+      
     }>
       <HomePage />
-
     </Suspense>
-
   )
 }
 
 async function HomePage() {
 
-  let data;
+  // let data;
 
-  try {
-    const response = await fetch('https://dummyjson.com/products?limit=194');
-    const datas = await response.json();
-    data = datas?.products || [];
-  } catch (err) {
-    console.log("eror")
-  }
+  // try {
+  //   const response = await fetch('https://dummyjson.com/products?limit=194');
+  //   const datas = await response.json();
+  //   data = datas?.products || [];
+  // } catch (err) {
+  //   console.log("eror")
+  // }
 
-
+  const data = await getProducts()
 
   return (
     <div className="min-h-screen bg-gray-50 relative ">
@@ -50,9 +50,6 @@ async function HomePage() {
             </div>
           );
         })}
-
-        
-
       </div>
     </div>
   )

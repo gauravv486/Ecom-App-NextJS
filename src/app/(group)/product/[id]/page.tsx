@@ -1,5 +1,6 @@
 //@ts-nocheck
 import products from "@/constants/product";
+import prismaClient from "@/services/prisma";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -18,22 +19,34 @@ export async function generateMetadata({ params }) {
 }
 
 
-export default async function Page({ params }) {
+export default async function ProductPage({ params }) {
 
     const id = params.id;
 
-    const url = "https://dummyjson.com/products/" + id;
+    // const url = "https://dummyjson.com/products/" + id;
 
-    const response = await fetch(url);
-    const data = await response.json();
+    // const response = await fetch(url);
+    // const data = await response.json();
 
-    // const x = products.find((item) => {
-    //     if (item.id == id) return true;
+    // // const x = products.find((item) => {
+    // //     if (item.id == id) return true;
+    // // })
+
+    // const data = await prismaClient.product.findUnique({
+    //     where :{
+    //         id : id
+    //     }
     // })
 
-    if (!data.id) {
-        notFound();
-    }
+    let url = "http://localhost:3000/api/products/" + id ;
+    let res = await fetch(url);
+    let result = await res.json();
+    let data = result?.data;
+
+
+    // if (!data.id) {
+    //     notFound();
+    // }
 
     return (
         <div className="min-h-screen p-6 flex flex-col md:flex-row gap-6 bg-gray-50 ">
@@ -41,7 +54,7 @@ export default async function Page({ params }) {
             <div className="h-1/2 rounded-lg overflow-hidden shadow-md w-full md:w-1/4">
                 <Image
                     className="h-60 w-60 object-cover"
-                    src={data?.thumbnail}
+                    src={data?.image_url}
                     width={100}
                     height={100}
                     alt={data.title}

@@ -3,43 +3,49 @@
 import { CartContext } from "@/contexts/CartContex";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import Addprobutton from "./Addprodbutton";
+import { getUserFromToken, logout } from "@/lib/action";
+import Logincheck from "./logincheck";
+import { useRouter } from "next/navigation";
 
-export default function Header() {
+export default function Header({ user }) {
 
     const { cart, setCart } = useContext(CartContext);
     const [userInput, setUserInput] = useState("");
     const [suggestion, setSuggestion] = useState([]);
 
-    useEffect(() => {
+    const router = useRouter();
 
+    useEffect(() => {
         async function getProds() {
             const response = await fetch('https://dummyjson.com/products?limit=194');
             const data = await response.json();
             const products = data.products;
-
             let results = products.filter((item) => item.title.toLowerCase().includes(userInput.toLowerCase()));
-
             setSuggestion(results.slice(0, 10));
-
         }
-
         if (userInput) {
-
             getProds();
         }
         else {
             setSuggestion([]);
         }
-
     }, [userInput])
+
+    function handlelogin() {
+
+        if (user.email) {
+            logout();
+        } else {
+            router.push('/login');
+        }
+    }
 
     return (
         <div>
             <header className="text-white bg-[#131921] h-20 px-6">
                 <div className="flex justify-between items-center h-full gap-4">
                     <div className="flex-shrink-0">
-                        {/* <img src="https://www.pngmart.com/files/23/Amazon-Logo-White-PNG-Image.png" alt="Amazon Logo" height={100} width={100} /> */}
+                        <p className="text-2xl font-bold">Shop Mart</p>
                     </div>
 
                     <div className="text-sm leading-tight">
@@ -66,9 +72,10 @@ export default function Header() {
                                 Search
                             </button>
                         </form>
-                        <div className="bg-white" style={{
+                        <div className="bg-white z-10" style={{
                             position: "absolute",
-                            top: 50
+                            top: 50,
+
                         }}>
                             {
                                 suggestion.map((item) => {
@@ -84,16 +91,15 @@ export default function Header() {
 
                     <div className="flex gap-4 text-sm font-semibold">
 
-                        
+                        <button onClick={handlelogin} className="hover:underline"> {user.email ? "logout" : "login"} </button>
 
-                        <Link href={"/login"}>
-                            <button className="hover:underline">Login</button>
-                        </Link>
+
                         <Link href={"/cart"}>
                             <button className="hover:underline">Cart{cart.length}</button>
                         </Link>
                     </div>
                 </div>
+
             </header>
         </div>
     )

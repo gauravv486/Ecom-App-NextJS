@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 
-import { handleSubmit, login } from "@/lib/action";
+import { handleSubmit, signup } from "@/lib/action";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -45,9 +45,9 @@ export default function Login() {
                 email: email,
                 password: password
             }
-            const res = await login(obj);
+            const res = await signup(obj);
             if (res.success) {
-                router.back();
+                router.push("/");
             } else {
                 errorobject.msg = res.message;
                 setError(errorobject);
@@ -57,14 +57,15 @@ export default function Login() {
 
     return (
 
-        <div className="fixed flex justify-center items-center bg-black/20 inset-0 z-50">
+        <div className="fixed flex justify-center items-center bg-black/20 inset-0 z-50" >
 
             <div className="absolute  z-20 h-auto w-100 align-middle bg-white rounded-2xl flex flex-col items-center justify-center shadow-2xl opacity-0.8">
                 <form
                     onSubmit={handleinterceptedsubmit}
+
                     className="w-full max-w-md flex flex-col space-y-6 px-8 py-10"
                 >
-                    <h2 className="text-3xl font-semibold text-black mb-2">Login</h2>
+                    <h2 className="text-3xl font-semibold text-black mb-2">Sign Up</h2>
 
                     <input
                         type="text"
@@ -76,6 +77,11 @@ export default function Login() {
                     {error.name && (
                         <p className="text-red-500 text-xs mt-2 font-medium">{error.name}</p>
                     )}
+                    {/* <input
+                        type="text"
+                        placeholder="Last Name"
+                        className="w-full bg-transparent border border-[#313135] rounded-xl text-gray-900 px-4 py-3 placeholder-gray-400 focus:outline-none focus:border-gray-500"
+                    /> */}
                     <input
                         type="email"
                         placeholder="Email"
@@ -101,9 +107,19 @@ export default function Login() {
                     >
                         Log In
                     </button>
-                    {
-                        error.msg && <p className="text-red-500 text-xs mt-2 font-medium">{error.msg}</p>
-                    }
+                    <div className="flex items-center my-3">
+                        <div className="flex-grow h-0.5 bg-[#313135]" />
+                        <span className="mx-3 text-gray-500 text-sm">Or</span>
+                        <div className="flex-grow h-0.5 bg-[#313135]" />
+                    </div>
+                    <div className="flex gap-4">
+                        <button type="button" className="flex-1 bg-[#212124] text-gray-200 rounded-xl py-2 font-medium transition hover:bg-[#29292e]">
+                            Google
+                        </button>
+                        <button type="button" className="flex-1 bg-[#212124] text-gray-200 rounded-xl py-2 font-medium transition hover:bg-[#29292e]">
+                            Facebook
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

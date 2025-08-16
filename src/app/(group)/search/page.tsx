@@ -2,7 +2,6 @@
 import Cards from "@/components/Card";
 import Header from "@/components/Header";
 
-
 export function generateMetadata({ searchParams }) {
     const searchTerm = searchParams.q;
     return {
@@ -11,14 +10,20 @@ export function generateMetadata({ searchParams }) {
     }
 }
 
-
 export default async function SearchPage({ searchParams }) {
+
     const query = searchParams.q;
     
     const url = 'https://dummyjson.com/products/search?q=' + query;
     const response = await fetch(url);
     const data = await response.json();
 
+    // let url = 'http://localhost/api/search/'
+
+    // if(query){
+    //     url += '?q=' + query ;
+    // }
+    
     const min = searchParams.min;
     const max = searchParams.max;
     const rating = searchParams.rating;
@@ -61,7 +66,6 @@ export default async function SearchPage({ searchParams }) {
                     </div>
                 }
 
-
                 {
                     results?.map((item) => {
                         return (
@@ -71,7 +75,6 @@ export default async function SearchPage({ searchParams }) {
                         )
                     })
                 }
-
             </div>
         </div>
     )

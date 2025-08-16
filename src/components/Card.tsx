@@ -14,7 +14,7 @@ export default function Cards({ item }) {
         <div className="h-40 bg-gradient-to-r from-gray-100 to-white flex items-center justify-center">
           <Image
             className="object-contain rounded-t-2xl"
-            src={item.thumbnail}
+            src={item.image_url || item.thumbnail}
             width={100}
             height={100}
             alt="Image"
@@ -23,7 +23,7 @@ export default function Cards({ item }) {
         <div className="p-4 space-y-1">
           <h1 className="text-lg font-bold text-gray-900">{item.title}</h1>
           <p className="text-sm text-gray-500 line-clamp-2">{item.description}</p>
-          <p className="text-sm text-gray-800 font-semibold">₹ {item.price}</p>
+          <p className="text-sm text-gray-500 font-semibold">{item.price}</p>
           <p className="text-sm text-yellow-500 font-semibold">⭐ {item.rating}</p>
         </div>
       </Link>
